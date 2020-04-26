@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         //db
         dbHelper = new DbHelper(this);
 
+        List<Note> lNote = dbHelper.getAllNotes();
 
         // listview personalizado
         recyclerView = findViewById(R.id.rvMain);
