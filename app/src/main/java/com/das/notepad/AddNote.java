@@ -234,6 +234,8 @@ public class AddNote extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("title", etNoteTitle.getText().toString());
+        savedInstanceState.putString("description", etNoteDescription.getText().toString());
         savedInstanceState.putParcelable("image", IMAGE);
     }
 
@@ -241,6 +243,9 @@ public class AddNote extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         IMAGE = savedInstanceState.getParcelable("image");
+        etNoteTitle.setText(savedInstanceState.getString("title"));
+        etNoteDescription.setText(savedInstanceState.getString("description"));
+
         ivPicture.setImageBitmap(IMAGE);
 
     }
