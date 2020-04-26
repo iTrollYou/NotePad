@@ -31,7 +31,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
     private RecyclerView recyclerView;
-// gdWt0BjweH
+    // gdWt0BjweH
     private DbHelper dbHelper;
     TextView noItemText;
 
@@ -73,9 +73,6 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         // listview personalizado
         recyclerView = findViewById(R.id.rvMain);
 
-        // ebvVFHG2Rha7xKxd3_o_Yx:APA91bFuICzFsIMWmKxzfSYndL6-bAL-jc0_Gns9pE8ObttFejiMVVAJCcNM7NmREOGgwFBQ6PYO-x6OuzCzn59Mf251agGjNKa5VijOfECgrYICWrcRWN8zvu3keQsF2-FOac8fu5AW
-        // String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        // Log.d("token", "Refreshed token: " + refreshedToken);
         FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
 
 

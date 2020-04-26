@@ -2,13 +2,17 @@ package com.das.notepad;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -42,6 +47,7 @@ public class AddNote extends AppCompatActivity {
     // id notificación
     private static final int idNotification = (int) (Math.random() * 999999) + 10000;
 
+    Bitmap IMAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +120,17 @@ public class AddNote extends AppCompatActivity {
                 takePicture();
             }
         });
+
+        // Pedir permisos para acceder a la camara y guardar fotos al usuario.
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA}, 1000);
+        }
 
     }
 
@@ -191,7 +208,10 @@ public class AddNote extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -199,6 +219,7 @@ public class AddNote extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            IMAGE = imageBitmap;
             ivPicture.setImageBitmap(imageBitmap);
         }
     }
@@ -210,4 +231,15 @@ public class AddNote extends AppCompatActivity {
         super.onDestroy();
     }
 
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable("image", IMAGE);
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        IMAGE = savedInstanceState.getParcelable("image");
+        ivPicture.setImageBitmap(IMAGE);
+
+    }
 }

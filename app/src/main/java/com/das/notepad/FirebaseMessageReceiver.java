@@ -45,8 +45,8 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
-                channel_id)
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(getApplicationContext(), channel_id)
                 .setContentTitle(title)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
                 .setContentText(message)
@@ -57,6 +57,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel =
                     new NotificationChannel(channel_id, "web_app",
