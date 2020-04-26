@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "908236579348",
+    "firebase_url": "https://notepad-bcf9b.firebaseio.com",
+    "project_id": "notepad-bcf9b",
+    "storage_bucket": "notepad-bcf9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908236579348:android:c06332d7ddf48ba302bd01",
+        "android_client_info": {
+          "package_name": "com.das.notepad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908236579348-j720catrvant3icf3dr5mjad0v81bb86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_-W4NLQaIE1eryRf31KbATw_gvQN7MhQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908236579348-j720catrvant3icf3dr5mjad0v81bb86.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
