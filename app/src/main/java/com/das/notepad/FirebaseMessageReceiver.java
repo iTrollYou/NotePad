@@ -17,17 +17,17 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Objects;
+
 public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //handle when receive notification via data event
         if (remoteMessage.getData().size() > 0) {
             showNotification(remoteMessage.getData().get("title"),
                     remoteMessage.getData().get("message"));
         }
 
-        //handle when receive notification
         if (remoteMessage.getNotification() != null) {
             showNotification(remoteMessage.getNotification().getTitle(),
                     remoteMessage.getNotification().getBody());
@@ -47,12 +47,12 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(getApplicationContext(), channel_id)
-                .setContentTitle(title)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
-                .setContentText(message)
-                .setSound(uri)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
+                        .setContentTitle(title)
+                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
+                        .setContentText(message)
+                        .setSound(uri)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent);
 
 
         NotificationManager notificationManager =
@@ -63,7 +63,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                     new NotificationChannel(channel_id, "web_app",
                             NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.setSound(uri, null);
-            notificationManager.createNotificationChannel(notificationChannel);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(notificationChannel);
         }
 
         notificationManager.notify(0, builder.build());

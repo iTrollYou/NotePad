@@ -21,10 +21,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ProtocolException;
+import java.nio.charset.StandardCharsets;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class Login extends AppCompatActivity {
+
+    private EditText etEmail, etPassword;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -36,79 +39,70 @@ public class Login extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        etEmail = findViewById(R.id.etUserEmail);
+        etPassword = findViewById(R.id.etUserPassword);
     }
 
     public void goToRegister(View view) {
+        Intent i = new Intent(this, Register.class);
+        this.startActivity(i);
     }
 
     public void login(View view) {
-        //Obtener los campos introducidos por el usuario
-        EditText i_username = findViewById(R.id.etUserEmail);
-        String username = i_username.getText().toString();
-        System.out.println(username);
-        EditText i_pass = findViewById(R.id.etUserPassword);
-        String pass = i_pass.getText().toString();
-        System.out.println(pass);
-        //Comprobar que el usuario ha introducido todos los campos
-        if (username.isEmpty() || pass.isEmpty()) {
-            Toast.makeText(this, "Empty fields", Toast.LENGTH_SHORT).show();
+        String username = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+
+        // Campos no vacios
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Algún campo vacío", Toast.LENGTH_SHORT).show();
         } else {
             HttpsURLConnection urlConnection = GeneradorConexionesSeguras.getInstance().
                     crearConexionSegura(this,
-                            "https://134.209.235.115/pguerrero002/WEB/init.php");
+                            "https://134.209.235.115/pguerrero002/WEB/conn.php");
 
             try {
                 JSONObject parametrosJSON = new JSONObject();
                 parametrosJSON.put("action", "login");
                 parametrosJSON.put("email", username);
-                parametrosJSON.put("password", pass);
+                parametrosJSON.put("password", password);
 
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestProperty("Content-Type", "application/json");
-                Log.i("MY-APP", "JSON: " + parametrosJSON); //genera mensajes de tipo informacion
 
                 PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-                out.print(parametrosJSON.toString()); //
+                out.print(parametrosJSON.toString());
                 out.close();
 
                 int statusCode = urlConnection.getResponseCode();
-                Log.i("MY-APP", "STATUS: " + statusCode); //genera mensajes de tipo informacion
 
                 if (statusCode == 200) {
-
-
-                    BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                    BufferedInputStream inputStream =
+                            new BufferedInputStream(urlConnection.getInputStream());
+                    BufferedReader bufferedReader =
+                            new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
                     String line;
                     StringBuilder result = new StringBuilder();
                     while ((line = bufferedReader.readLine()) != null) {
                         result.append(line);
-                        System.out.println(line);
                     }
                     inputStream.close();
 
 
                     JSONParser parser = new JSONParser();
                     JSONObject json = (JSONObject) parser.parse(result.toString());
-                    String usuario = (String) json.get("user");
 
-                    Log.i("MY-APP", "DATA: " + result); //genera mensajes de tipo informacion
 
-                    if (usuario == null) {
-                        Toast.makeText(this, "Login incorrect, please try again", Toast.LENGTH_SHORT).show();
+                    if (json.get("user") == null) {
+                        Toast.makeText(this, "Fallo en la identificación", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Login correct", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Identificación correcta", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(this, MainActivity.class);
-                        i.putExtra("usuario", usuario);
                         this.startActivity(i);
                     }
                 }
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
         }

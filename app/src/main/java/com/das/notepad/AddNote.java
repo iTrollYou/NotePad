@@ -231,11 +231,13 @@ public class AddNote extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putParcelable("image", IMAGE);
     }
 
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         IMAGE = savedInstanceState.getParcelable("image");
