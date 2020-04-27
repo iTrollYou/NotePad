@@ -31,7 +31,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
     private RecyclerView recyclerView;
-    // gdWt0BjweH
     private DbHelper dbHelper;
     TextView noItemText;
 
