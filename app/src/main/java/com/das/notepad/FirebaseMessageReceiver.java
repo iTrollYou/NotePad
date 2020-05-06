@@ -19,6 +19,11 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Objects;
 
+
+/**
+ * Extraído de https://www.youtube.com/watch?v=1lT0ZliubU0
+ * Author: Super Coders
+ */
 public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
     @Override
